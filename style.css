@@ -1,0 +1,215 @@
+/* ПРЯЧЕМ ВСЕ РОДНЫЕ КНОПКИ СООБЩЕНИЯ (кроме нашего триггера) */
+body.stwii--hide-native .mes_buttons > *:not(.stwii--trigger-btn) {
+    display: none !important;
+}
+
+/* Стили для нового чекбокса в панели */
+.stwii--settings-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9em;
+    color: #aaa;
+}
+.stwii--settings-row input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* --- КРАСИВЫЙ СТИЛЬ ОКНА (HUD Aesthetics) --- */
+.stwii--panel {
+    position: fixed;
+    background: rgba(18, 18, 22, 0.85); /* Глубокий темный фон */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    z-index: 10000;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    color: #e0e0e0;
+    font-size: 0.9em;
+    overflow-y: auto; /* Позволяет скроллить саму панель */
+}
+
+/* Кастомный скроллбар для всей панели */
+.stwii--panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.stwii--panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* Блок с кнопками сверху (наши "прокси") */
+.stwii--quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    justify-content: center;
+}
+
+/* Сами кнопки действий */
+.stwii--proxy-btn {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--SmartThemeQuoteColor, #aaa);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+}
+
+.stwii--proxy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Контейнеры контента */
+.stwii--stats-container, .stwii--wi-container {
+    padding: 12px 16px;
+}
+
+.stwii--wi-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Кастомный скроллбар для лора */
+.stwii--wi-container::-webkit-scrollbar {
+    width: 6px;
+}
+.stwii--wi-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* Стилизация внутренностей Stats и World Info */
+.stwii--world {
+    font-weight: 700;
+    color: var(--SmartThemeQuoteColor, #fff);
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 3px;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+.stwii--entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.stwii--entry:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.stwii--token-badge {
+    margin-left: auto;
+    opacity: 0.6;
+    font-size: 0.85em;
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Стилизация секций Context Monitor */
+.cm-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.cm-muted {
+    opacity: 0.6;
+}
+.cm-section-title {
+    font-weight: 600;
+    color: var(--SmartThemeQuoteColor, #fff);
+    margin-bottom: 6px;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    padding-bottom: 3px;
+    font-size: 0.9em;
+}
+
+/* ==========================================================================
+   📱 ЖЕЛЕЗОБЕТОННЫЙ МОБИЛЬНЫЙ ФИКС
+   ========================================================================== */
+
+/* 1. Спасаем Flexbox от jQuery. 
+   Скрипт делает panel.style.display = 'none' / 'flex'. 
+   Этот хак гарантирует, что когда окно видимо, оно 100% flex. */
+.stwii--panel:not([style*="none"]) {
+    display: flex !important;
+}
+
+/* 2. Жесткие мобильные размеры (Перехватываем окно на телефонах) */
+@media screen and (max-width: 768px) {
+    .stwii--panel {
+        /* Растягиваем почти на весь экран */
+        width: 96vw !important;
+        max-width: 96vw !important;
+        left: 2vw !important; /* Центрируем (100 - 96) / 2 */
+        
+        /* Отступаем сверху минимум на высоту шапки Tavern (60px) или 10% экрана */
+        top: max(60px, 10dvh) !important; 
+        
+        /* Ограничиваем высоту, чтобы не вылезло за нижний край, и включаем скролл */
+        max-height: 85dvh !important; 
+        
+        transform: none !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        
+        /* Выводим поверх вообще всего интерфейса Таверны */
+        z-index: 100005 !important; 
+    }
+    
+    /* Делаем прокси-кнопки чуть крупнее для удобного нажатия пальцем */
+    .stwii--proxy-btn {
+        padding: 12px 16px !important;
+        font-size: 1.3em !important;
+    }
+}
+
+/* ==========================================================================
+   🖥️ ФИКС ДЛЯ ДЕСКТОПА (Возможность ресайза)
+   ========================================================================== */
+/* Добавляем возможность растягивать окно за правый нижний угол, 
+   как в твоем #nhud-notif-panel */
+.stwii--panel {
+    resize: both;
+    overflow: hidden; /* Скрываем внешний скролл для ресайза */
+}
+
+/* Переносим скролл внутрь контейнеров, чтобы ресайз работал корректно */
+.stwii--wi-container {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 100px;
+}
+.stwii--stats-container {
+    flex-shrink: 0; /* Верхняя часть со статистикой не сжимается */
+}

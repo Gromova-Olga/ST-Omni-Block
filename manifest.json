@@ -1,0 +1,11 @@
+{
+  "display_name": "ST Omni Block",
+  "loading_order": 100,
+  "requires": [],
+  "optional": [],
+  "js": "index.js",
+  "css": "style.css",
+  "author": "Gromova-Olga",
+  "version": "1.0.0",
+  "homePage": "https://github.com/Gromova-Olga/ST-Omni-Block"
+}
